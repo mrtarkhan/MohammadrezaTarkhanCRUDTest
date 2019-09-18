@@ -177,7 +177,7 @@
             </div>
             <form asp-action="Create" method="post">
 
-                @Html.Hidden("country", "us", new { @id = "addCountry", @class = "country" })
+                @Html.Hidden("country", "us", new { @id = "country", @class = "country" })
 
 
                 <div class="modal-body">
@@ -258,7 +258,7 @@
 
         input.addEventListener("countrychange", function ($event) {
             for (var i = 0; i < country.length; i++) {
-                country[i].value = iti.getSelectedCountryData().iso;
+                country[i].value = iti.getSelectedCountryData().iso2;
             }
         });
 
@@ -308,7 +308,7 @@
 
     input.addEventListener("countrychange", function ($event) {
         for (var i = 0; i < country.length; i++) {
-            country[i].value = iti.getSelectedCountryData().iso;
+            country[i].value = iti.getSelectedCountryData().iso2;
         }
     });
 
