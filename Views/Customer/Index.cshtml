@@ -1,0 +1,330 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@model List<MohammadrezaTarkhanCRUDTest.DataLayer.Customer>
+<h1>Index</h1>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomer">
+    Create new Customer
+</button>
+
+
+
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">FirstName</th>
+            <th scope="col">LastName</th>
+            <th scope="col">DateOfBirth</th>
+            <th scope="col">PhoneNumber</th>
+            <th scope="col">Email</th>
+            <th scope="col">BankAccountNumber</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var count = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.DateOfBirth.ToShortDateString()</td>
+                <td>@item.PhoneNumber</td>
+                <td>@item.Email</td>
+                <td>@item.BankAccountNumber</td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editCustomer_@count">
+                        Edit
+                    </button>
+
+                    <!-- edit modal -->
+                    <div class="modal fade" id="editCustomer_@count" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editCustomerLable_@count">edit customer</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form asp-action="Edit" method="post">
+                                    @Html.Hidden("id", item.Id)
+                                    @Html.Hidden("country", "us", new { @id = "country" + item.Id, @class = "country" })
+
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="firstName" class="col-form-label">Firstname:</label>
+                                            <input type="text" value="@item.FirstName" class="form-control" id="firstName" name="firstName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName" class="col-form-label">Lastname:</label>
+                                            <input type="text" value="@item.LastName" class="form-control" id="lastName" name="lastName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email" class="col-form-label">Email:</label>
+                                            <input type="email" value="@item.Email" class="form-control" id="email" name="email">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="phoneNumber" class="col-form-label">PhoneNumber:</label>
+                                            <input type="tel" value="@item.PhoneNumber" class="form-control" id="phoneNumber@(item.Id)" name="phoneNumber">
+                                            <span id="valid-msg@(item.Id)" class="hide">✓ Valid</span>
+                                            <span id="error-msg@(item.Id)" class="hide"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="DateOfBirth" class="col-form-label">DateOfBirth:</label>
+                                            <input type="date" value='@item.DateOfBirth.ToString("mm/dd/yyyy")' class="form-control" id="DateOfBirth" name="DateOfBirth">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="BankAccountNumber" class="col-form-label">BankAccountNumber:</label>
+                                            <input type="number" value="@item.BankAccountNumber" class="form-control" id="BankAccountNumber" name="BankAccountNumber">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+
+
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteCustomer_@count">
+                        Delete
+                    </button>
+
+
+                    <!-- delete modal -->
+                    <div class="modal fade" id="deleteCustomer_@count" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteCustomerLable_@count">edit customer</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form asp-action="Delete" method="post">
+                                    <div class="modal-body">
+                                        @Html.Hidden("id", item.Id)
+                                        <div class="form-group">
+                                            <label for="firstName" class="col-form-label">Firstname:</label>
+                                            <input disabled type="text" value="@item.FirstName" class="form-control" id="firstName" name="firstName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName" class="col-form-label">Lastname:</label>
+                                            <input disabled type="text" value="@item.LastName" class="form-control" id="lastName" name="lastName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email" class="col-form-label">Email:</label>
+                                            <input disabled type="text" value="@item.Email" class="form-control" id="email" name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phoneNumber" class="col-form-label">PhoneNumber:</label>
+                                            <input disabled type="text" value="@item.PhoneNumber" class="form-control" id="phoneNumberForDelete" name="phoneNumber">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="DateOfBirth" class="col-form-label">DateOfBirth:</label>
+                                            <input disabled type="text" value='@item.DateOfBirth.ToString("mm/dd/yyyy")' class="form-control" id="DateOfBirth" name="DateOfBirth">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="BankAccountNumber" class="col-form-label">BankAccountNumber:</label>
+                                            <input disabled type="text" value="@item.BankAccountNumber" class="form-control" id="BankAccountNumber" name="BankAccountNumber">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+
+
+                @{
+                    count++;
+                }
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="createCustomer" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCustomerLable">new customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" method="post">
+
+                @Html.Hidden("country", "us", new { @id = "addCountry", @class = "country" })
+
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="firstName" class="col-form-label">Firstname:</label>
+                        <input type="text" class="form-control" name="firstName" id="firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="col-form-label">Lastname:</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber" class="col-form-label">PhoneNumber:</label>
+                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber">
+                        <span id="valid-msg" class="hide">✓ Valid</span>
+                        <span id="error-msg" class="hide"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="DateOfBirth" class="col-form-label">DateOfBirth:</label>
+                        <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth">
+                    </div>
+                    <div class="form-group">
+                        <label for="BankAccountNumber" class="col-form-label">BankAccountNumber:</label>
+                        <input type="number" class="form-control" id="BankAccountNumber" name="BankAccountNumber">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="createButton" type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    // here, the index maps to the error code returned from getValidationError - see readme
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+    function addChangeToElement(id) {
+        var input = document.querySelector("#phoneNumber" + id),
+            errorMsg = document.querySelector("#error-msg" + id),
+            validMsg = document.querySelector("#valid-msg" + id),
+            country = document.getElementsByClassName("country" + id);
+
+        // initialise plugin
+        var iti = window.intlTelInput(input, {
+            utilsScript: "./lib/intl-tel-input-16.0.0/js/utils.js?1562189064761"
+        });
+
+        var reset = function () {
+            input.classList.remove("error");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
+
+        // on blur: validate
+        input.addEventListener('blur', function () {
+            reset();
+            if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                    validMsg.classList.remove("hide");
+                } else {
+                    input.classList.add("error");
+                    var errorCode = iti.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                }
+            }
+        });
+
+        input.addEventListener("countrychange", function ($event) {
+            for (var i = 0; i < country.length; i++) {
+                country[i].value = iti.getSelectedCountryData().iso;
+            }
+        });
+
+        // on keyup / change flag: reset
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
+    }
+
+    var input = document.querySelector("#phoneNumber"),
+        errorMsg = document.querySelector("#error-msg"),
+        validMsg = document.querySelector("#valid-msg"),
+        createButton = document.querySelector("#createButton"),
+        country = document.getElementsByClassName("country");
+
+    // here, the index maps to the error code returned from getValidationError - see readme
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+    // initialise plugin
+    var iti = window.intlTelInput(input, {
+        utilsScript: "./lib/intl-tel-input-16.0.0/js/utils.js?1562189064761"
+    });
+
+    var reset = function () {
+        input.classList.remove("error");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+        validMsg.classList.add("hide");
+        createButton.disabled = false;
+    };
+
+    // on blur: validate
+    input.addEventListener('blur', function () {
+        reset();
+        if (input.value.trim()) {
+            if (iti.isValidNumber()) {
+                validMsg.classList.remove("hide");
+                createButton.disabled = false;
+            } else {
+                input.classList.add("error");
+                var errorCode = iti.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
+                createButton.disabled = true;
+            }
+        }
+    });
+
+    input.addEventListener("countrychange", function ($event) {
+        for (var i = 0; i < country.length; i++) {
+            country[i].value = iti.getSelectedCountryData().iso;
+        }
+    });
+
+    // on keyup / change flag: reset
+    input.addEventListener('change', reset);
+    input.addEventListener('keyup', reset);
+
+</script>
+
+
+<script>
+
+@foreach (var item in Model)
+{
+    <text>
+        addChangeToElement(@item.Id);
+    </text>
+}
+</script>
