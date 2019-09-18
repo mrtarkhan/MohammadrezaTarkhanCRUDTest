@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PhoneNumbers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,8 +21,16 @@ namespace MohammadrezaTarkhanCRUDTest.DataLayer
 		public void ValidatePhoneNumber ()
 		{
 			this.Country = this.Country == null ? "US" : this.Country;
+			if (this.PhoneNumber[0] != '0')
+				this.PhoneNumber = '0' + this.PhoneNumber;
+
 			var phoneNumberUtil = PhoneNumbers.PhoneNumberUtil.GetInstance();
 			var phoneNumber = phoneNumberUtil.Parse(this.PhoneNumber, this.Country.ToUpper());
+			var type= phoneNumberUtil.GetNumberType(phoneNumber);
+			if (type != PhoneNumberType.MOBILE)
+			{
+				throw new ArgumentException("phone number is not valid");
+			}
 			if (!phoneNumberUtil.IsValidNumber(phoneNumber))
 			{
 				throw new ArgumentException("phone number is not valid");
